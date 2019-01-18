@@ -1,0 +1,316 @@
+
+OSI(open system interconnection)
+ISO(International Organization for Standardization) -- 网络七层
+	应用层、表示层、会话层、传输层、网络层、数据链路层、物理层
+TCP/IP四层模型：应用层、传输层、网络层、链路层
+
+https://aparadeway.github.io/pac.js
+
+
+高速页缓存 -- 4K
+磁盘 -- 512Byte  1块8个扇区
+
+echo 'hello world' | (执行程序)
+
+umask
+
+
+vim /etc/resolv.conf
+
+jmp_buf env；
+int ret = setjmp(env) // 成功返回0，如果是跳转，则传入什么返回什么
+ps -eLo ruser,pid,lwp,psr,args | grep instance // 查询多进程与内核的绑定状态
+
+sigaction---------------------------
+
+https://github.com/zhiyong0804/architect-awesome
+码云
+https://hr.tencent.com/
+
+
+为什么普通有课 VIP没课呢？
+动脑-成都-Student(1120943127) 2018/9/22 21:44:15
+http://support.miritech.com/blog/how-to-install-configure-apache-thrift-in-ubuntu-16-04/
+thrift安装
+基于老师给的Ubuntu
+关键步骤
+Installation Step by Step Guide:
+
+To use with Java you will also need to install Apache Ant
+>> sudo apt–get install ant
+Installing required tools and libraries:
+>> sudo apt-get install libboost-dev libboost-test-dev libboost-program-options-dev libboost-filesystem-dev libboost-thread-dev libevent-dev automake libtool flex bison pkg-config g++ libssl-dev
+Download Thrift from git>> git clone
+https://git-wip-us.apache.org/repos/asf/thrift.git thrift>> cd thrift
+For an Ubuntu linux distribution you just need to go to the thrift directory and type:
+>> ./bootstrap.sh>> ./configure
+On the same directory run make to build Thrift
+>> sudo make
+(Optional) Run the test suite if you want
+>> sudo make check
+And finally you are ready to install Thrift by running
+>> sudo make install
+Verify installation:
+Now your Thrift installation is completed! To verify that you have successfully installed Thrift just type>> thrift –version
+
+
+编译链接错误解决方法：
+1 快速解决：在网上查关键字 大多数直接找能找到，建议google 英文
+2 根治解决：搞清楚整个编译的过程做了什么，任何编译错误都能轻易解决；读深入理解计算机系统、高级C/C++编译技术、程序员的自我修养
+
+动脑-深圳-flame(594611495) 2018/9/28 11:42:36
+https://www.cnblogs.com/heshizhu/archive/2013/01/04/2843777.html
+安装thrift还是这个比较完善
+推荐推荐
+动脑-深圳-？？？<lmc8979@qq.com> 2018/9/28 11:44:01
+我以前捯饬过我的系统配置，所以编译thrift的时候，一个make -j8命令，一分钟编译完成
+
+
+
+ln -s /usr/local/myproject/thrift-0.11.0/lib/lua/.libs/liblualongnumber.so  /usr/local/lib/liblualongnumber.so
+加了个软连接就能安装过了
+
+
+
+
+
+
+一线架构师实践指南
+重构改善既有代码的设计
+
+
+thrift
+
+UDP -- 2源port 2目标port 2crc long
+
+
+
+ACK延迟太大
+RTT RTO比实际需要要大
+
+TCP:
+三次握手是什么：
+什么情况下用TCP什么情况下用UDP：
+为什么会用Nagle算法
+close_wait什么时候产生的
+time_wait是怎么产生的
+KeepAlive用协议栈还是应用程序
+tcp_nodelay设置后，为什么不是一次send发一次包
+Tcp拥塞算法
+SOCK_DGRAM与SOCK_STREAM两个套接字的区别
+
+CLIENT		SERVER
+socket		socket
+connect		bind
+send		listen
+recv		accept
+close		recv
+			send
+			close
+
+
+四元组
+connect发起三次握手，通过协议栈完成三次握手
+
+
+svn git sqldeveloper oracle redis timesten makefile shell python
+
+https://travis-ci.org/apache/thrift
+
+
+git		code
+
+
+/usr/local/include/thrift/server/TNonblockingServer.h:76:23: error: multiple types in one declaration
+
+
+物理层：01
+数据链路层：通过哪个网口发出去
+网络层：
+
+
+MAC地址，同一子网内--同一局域网内
+
+
+
+
+
+大家有任何问题可以热烈讨论起来啊
+技术问题
+lee(2078433879)  23:09:23
+
+卢  我是从你分享的链接里看到的  其实里面有很多的错误
+动脑-深圳-Reese(1319693474)  23:09:59
+lee哥，有个问题，从二层看，从源主机到目的主机，他们并不知道对方的mac，那这个mac是如何填充的呢，另外，从A网络传输到B网络，源mac和目的mac会变化吗
+lee(2078433879)  23:10:07
+比如这就是一处
+good question
+lee(2078433879)  23:17:57
+是的  从二层看  我们只能依靠MAC地址去发送，MAC地址解决了物理连接上的通信，理论上用MAC地址可以使任何网络之间都能通信，但是如果单单只使用MAC地址表示地址信息的话，通信时是很低效的，所以就引入了IP地址，这个IP地址是由我们在发送的时候填写的，但是我们在实际通信的时候需要MAC地址，那怎么办呢？此时就需要ARP协议了，ARP协议会去当前网络上广播，说这个IP地址的MAC地址是谁，这样受到信息的对端且IP地址符合的，就会回应，否则丢弃不管，这样我们就知道了MAC地址了，再加上二层交换机维护的MAC地址与网口的对应表（很多地方叫MAC地址表）就可以通过某个网口发送出去了
+另外如果ARP请求没有任何一台节点回复，就去问网关的MAC地址。
+动脑-深圳-Unic(757516637)  23:19:05
+ip地址=网络地址+主机地址，有主机地址就可以定位到子网内的某台主机了吧，那是不是可以不用mac地址来定位某台主机。
+lee(2078433879)  23:19:37
+这个MAC地址表会一直刷新和维护的，刷新时间是由生产厂商决定的  目前不太情况这个是否可以由用户配置
+lee(2078433879)  23:20:49
+“动脑-深圳-Unic   23:19:05  查看原文
+ip地址=网络地址+主机地址，有主机地址就可以定位到子网内的某台主机了吧，那是不是可以不用mac地址来定位某台主机。
+ 
+你这个问题其实就是有了IP地址是否还需要MAC地址，或者有了MAC地址是否还需要IP地址一样
+动脑-深圳-Unic(757516637)  23:23:26
+不一样啊，有mac地址，需要IP来定位是哪个网段，但是，有IP地址也就有主机地址啊，主机地址感觉和mac有相似的功能，都是定位这个网络内的某台主机
+lee(2078433879)  23:23:52
+“动脑-深圳-Reese   23:09:59  查看原文
+lee哥，有个问题，从二层看，从源主机到目的主机，他们并不知道对方的mac，那这个mac是如何填充的呢，另外，从A网络传输到B网络，源mac和目的mac会变化吗
+ MAC地址每经过一个设备或者说节点都会改变
+动脑-深圳-Reese(1319693474)  23:24:33
+@lee  也就是说，如果发arp没有人回复，就把这个数据帧的mac字段填充为网关的mac，然后发给网关，由网关转发出去？
+lee(2078433879)  23:25:07
+“动脑-深圳-Reese   23:24:33  查看原文
+@动脑学院【Lee老师】  也就是说，如果发arp没有人回复，就把这个数据帧的mac字段填充为网关的mac，然后发给网关，由网关转发出去？
+ 是的
+动脑-深圳-Reese(1319693474)  23:27:47
+假如这个网关已经收到来自A主机的数据，但是他也不知道A的目的mac是谁，这个网关也把数据转发给他自己的网关，转发的时候i，会修改这个数据帧的源地址（MAC）吗
+lee(2078433879)  23:28:34
+“动脑-深圳-Unic   23:23:26  查看原文
+不一样啊，有mac地址，需要IP来定位是哪个网段，但是，有IP地址也就有主机地址啊，主机地址感觉和mac有相似的功能，都是定位这个网络内的某台主机
+ 不一样的  想让我回答完你的问题，MAC地址是个物理地址，可以简单认为也是网络上唯一的地址，但是使用用它的话，就比较难以区分出一个网段，或者说不太区分出一个子网的边界，但是IP地址比较好，他加上掩码可以区分子网的边界，比如192.168.1.9和掩码255.255.255.0就区分了这个网络的边界是192.168.1了
+lee(2078433879)  23:29:57
+有了这个边界，那么我们的L3交换机就可以很多的工作，因为我通过网段知道了这个网段内所有主机的范围，而就不需要一 一比较MAC地址了，否则如果没有IP地址，则必须去比较MAC地址
+而且逐一比较MAC地址。
+这就是通信的效率问题，或者说选择路径的效率问题
+lee(2078433879)  23:31:56
+“动脑-深圳-Reese   23:27:47  查看原文
+[图片]假如这个网关已经收到来自A主机的数据，但是他也不知道A的目的mac是谁，这个网关也把数据转发给他自己的网关，转发的时候i，会修改这个数据帧的源地址（MAC）吗
+ 网关发送时填写自己的MAC地址
+MAC地址解决了物理层的通信问题
+动脑-深圳-Unic(757516637)  23:32:58
+你还没明白我的意思，你说的这个我明白，我的意思是，根据掩码确定了子网后，我们不是可以也可以得到主机地址吗，主机地址在这个网络也是唯一的，为什么不可以用主机地址去寻址。
+动脑-杭州-一帆(29511657)  23:34:25
+这个和二层交换机工作原理有关
+交换机端口和MAC是一一对应的
+动脑-深圳-Unic(757516637)  23:35:42
+交换那是后话，我完全可以设计主机地址和端口映射这种方式
+lee(2078433879)  23:42:15
+你这个问题问的很深  我可以沿着你的思路来  那就是有了IP  就可以不需要MAC地址了  如果不需要MAC地址  那么二层交换机也不需要了 或者要加以改造，改造就是IP 与 网口对应起来
+动脑-深圳-Unic(757516637)  23:45:38
+我就是这个意思，理论上是可行的，是不是因为历史原因，都才用了mac这种方式呢
+动脑-深圳-Afa<joyafa@foxmail.com>  23:46:32
+Ip6每个主机一个IP，就可以解决这个问题了吧
+动脑-珠海-海风(875522069)  23:49:06
+MAC每经过一个节点都会变，是不是无法直接获取其它子网主机的MAC地址了？除非再封装一个应用层？
+动脑-深圳-Reese(1319693474)  23:56:27
+@动脑-深圳-Unic  IP是可变的，不与物理机进行绑定，如果没有一个编码来识别物理机，网络环境一变化岂不乱套了？
+所以肯定要一个编码来识别物理机（或者说网口），这个就是mac
+动脑-深圳-Unic(757516637)  23:57:47
+变化了，它在这个网络中也是唯一的，
+动脑-深圳-Unic(757516637)  23:58:59
+依然能够定位到这台主机。
+lee(2078433879)  0:00:21
+那么继续这个思路继续下去  大家就会发现链路层没有存在的必要了  那么我们再来看我们的网络会成了什么样子  就是从一个地点到达另一个地点  那如果在网络上发送时不管如何  都要去拆开IP包头  不断刷新路由表  而且如果有一台设备的IP地址变了  那整个路由表变  事实上  我们现在也是这样的  但是 如果有了MAC地址  那么对于这个子网络来讲  我们的数据还是随意通达的  你要给定MAC地址就行
+动脑-成都-Student(1120943127)  0:02:20
+很多时候我们觉得有mac，IP就没啥用了，他俩似乎可以替代。在局域网内是可以的。mac主要用于以太网，除了以太网以外还有很多协议标准，他们都在自己的领域不可替代。如果两个不同协议的网络需要通信就需要ARP协议（ARP不仅仅是解析MAC到IP）。由于有很多通信协议的存在，就像群雄割据，不同协议之间通信不容易，就需要一个大一统的角色，IP就是网络世界的秦始皇，他统一了各种协议。但是IP只有网络层一层，端到端可靠性无法保障，于是借助TCP协议来实现。这也就是为啥当今网络基本上都是TCP/IP
+TCP只负责传输层，IP只负责网络层
+其余各层由不同协议负责
+动脑-成都-Student(1120943127)  0:03:30
+在网络协议里面有个术语叫协议融合，IP就有点这个味道
+不要以为以太网只有下三层，以太网也是有过7层协议的人，但是为了能与外面的网络协议通信，委身嫁给了IP
+动脑-成都-Student(1120943127)  0:05:25
+协议融合包括：调用，映射，tunneling
+TCP就是调用了IP，iSCSI就是把SCSI tunneling进IP
+没必要纠结什么MAC，IP
+lee(2078433879)  0:09:22
+一切都是为了通信效率上  如果没有MAC地址  那么就只能使用IP地址通信  而IP地址就成了既是逻辑的也是物理的  既要标识是哪个主机  也要标识从哪个网口发送出去  这大概没有人会这么设计子网络和跨网络的通信
+动脑-深圳-Reese(1319693474)  0:09:50
+这些是mac层除了物理转发之外的其他作用，如果没有mac层，这些功能将由IP层来承担，这样会导致IP层太臃肿，根本不符合IP层当初的设计理念 ---- 屏蔽底层通信细节，方便地实现跨网络连接
+动脑-成都-Student(1120943127)  0:10:15
+IP的目的是将其他网络协议划分到自己势力范围，它不仅仅是为以太网服务
+存储领域的SCSI，FC都嫁接到IP上过
+动脑-成都-Student(1120943127)  0:11:19
+不管什么协议，哪怕你7层都全也没用，想通信就要下嫁给IP
+SCSI就7层都有，但是下四层都是用别人的协议。比如FCP就是SCSI的下四层用FC，iSCSI下四层用IP+以太网
+lee(2078433879)  0:12:41
+没有IP   或者 没有MAC地址  原理上都是能相互通信  只是通信的成本和网络的边界问题
+动脑-成都-Student(1120943127)  0:12:42
+以太网仅仅是一种
+
+
+
+动脑-深圳-Unic(757516637)  0:14:27
+
+lee(2078433879)  0:14:41
+那你说说为什么有了IP  还需要MAC地址呢？
+@动脑-成都-Student 
+动脑-成都-Student(1120943127)  0:15:48
+我的回答是站在协议融合的角度，我并不是想表达不需要MAC
+以太网协议不仅仅只到链路层，他上边还有，只是不用
+动脑-成都-Student(1120943127)  0:17:06
+为啥不用，以太网存在的意义不是自己小范围通信，他要接入整个Internet，这就设计和其他协议通信。以太网的标准别人自然不认
+这时候就需要IP做个中间人，所有协议必须有ARP映射成IP，然后借由IP通信
+IP仅仅只有网络一层
+lee(2078433879)  0:18:42
+ARP是将IP映射成MAC吧
+动脑-成都-Student(1120943127)  0:18:50
+不仅仅
+ARP是个很广的协议，除了mac到IP，其他协议到IP也可以称为ARP
+动脑-深圳-Reese(1319693474)  0:19:26
+这副图是tcp/ip网络的架构图，可以看到是上下宽，中间窄的。可以看出IP层的作用，向下，屏蔽底层各式各样的物理层差异，统一通信方式，向上承接丰富的应用层协议，提高效率
+动脑-成都-Student(1120943127)  0:20:32
+网络协议有些是7层都有，比如SCSI。但是他在实际应用中会不会全部用到，很多时候是不会的
+lee(2078433879)  0:21:01
+“动脑-成都-Student   0:19:18  查看原文
+ARP是个很广的协议，除了mac到IP，其他协议到IP也可以称为ARP
+ 你确定你没有搞混方向？
+动脑-成都-Student(1120943127)  0:21:09
+没有
+请参考，大话存储 协议融合那一块
+虽然是几个月前看的了
+动脑-深圳-Unic(757516637)  0:21:38
+好像还有个rarp
+lee(2078433879)  0:21:47
+是把MAC转换成IP，而不是把IP转换成MAC？
+
+
+http短连接会不会有那些问题，时间问题
+课程--51min有无状态讲解
+workers怎么接受服务，有队列吗
+协议头协议体 命令字
+
+TCPdump去抓包。wirshar
+这个通告是什么机制触发的呢，还是到了一定的时间就发送给发送端的吗
+18节课，1小时之右
+MSS--tcp最大的大小，1460字节，最大传输分节
+MTU - IP头 - tcp头 = 1460字节
+
+TCP长短连接64min
+
+
+设计模式：
+	订阅发布机制（事件驱动的设计）：深刻理解
+	反应堆模式（线程池结合）
+	工厂模式
+	过滤器模式
+	桥接模式：第三方库
+	
+	
+
+
+﻿链接:https://pan.baidu.com/s/1M38CRntS9nE5v6umoMiTcA 提取码:glv7 复制这段内容后打开百度网盘手机App，操作更方便哦
+说明：人家专门做这个工作，需要播放的按照播放器上面操作即可，跟小二说：lujun 介绍即可，可优惠
+
+
+
+
+局域网：mac地址表
+广域网：路由表--IP、网关
+ARP协议：IP转换MAC地址
+
+传输层：TCP UDP
+tcpdump，wirshar
+
+
+拥塞控制：120min
+
+http	63
+
+pthreadpool	57
