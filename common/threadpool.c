@@ -35,6 +35,7 @@ threadpool_t* threadpool_create(int work_size, int queue_size)
             threadpool_destory(pool);
             return NULL;
         }
+        set_cpu_pthread(pool->workers[i].threadid, i);
         printf("create thread id : %d\n", pool->workers[i].threadid);
     }
 
@@ -159,4 +160,15 @@ void* handler(void*arg)
     }
 
     return NULL;
+}
+
+bool set_cpu_pthread(pthread_t tid, int pthreadNo)
+{
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(pthreadNo % CPU_SETSIZE, &mask);
+    if(pthread_setaffinity_np(tid, sizeof(mask), &mask) < 0){
+        perror("pthread_setaffinity_np");
+    }
+    return true;
 }

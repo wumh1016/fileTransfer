@@ -1,11 +1,14 @@
 #ifndef _THREADPOOL_H_
 #define _THREADPOOL_H_
 
+#define _GNU_SOURCE
+#include <sched.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdint.h>
 
 #define bool int
 #define true 1
@@ -45,6 +48,7 @@ bool task_push_tail(threadpool_t* pool, task_t task);
 task_t* task_pop_head(threadpool_t* pool);
 bool tasks_is_full(threadpool_t* pool);
 bool tasks_is_empty(threadpool_t* pool);
+bool set_cpu_pthread(pthread_t tid, int pthreadNo);
 
 #ifdef __cplusplus
 }

@@ -106,22 +106,6 @@ int main(int argc, char const *argv[])
                         printf("%d\n", ret);
                     }
                     sleep(1);
-                    //perror("pthread_create-----------");
-                    /* int res = pthread_join(pthread_, NULL);
-                    printf("%d\n",res);
-                    if(ret != 0){
-                        perror("pthread_join---");
-                        printf("%d\n",res);
-                    } */
-                    /* pthread_attr_t attr;
-                    pthread_attr_init(&attr);
-                    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-                    pthread_create(&pthread_, &attr, handler, (void *)&cfd);
-                    usleep(2); */
-                    //pthread_detach(pthread_);
-                    //pthread_join(pthread_, NULL);
-
-                    //pthread_attr_destroy(&attr);
                 }
             }
         }
@@ -215,7 +199,6 @@ void recv_fileinfo_and_create_file(uint8_t *buf, int cfd)
     int fileSize = (buf[HEAD_POS_TOTAL_SIZE] << 8) + (buf[HEAD_POS_TOTAL_SIZE + 1]);
     int fileNameSize = (buf[HEAD_POS_P_LENGTH] << 8) + (buf[HEAD_POS_P_LENGTH + 1]);
     uint8_t fileName[FILENAMESIZE] = {0};
-    //memcpy(fileName, buf + HAND_TOTAL_SIZE, fileNameSize);
     int rets = recv(cfd, fileName, fileNameSize, 0);
     if(rets < 0){
         perror("recv");

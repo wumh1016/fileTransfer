@@ -6,48 +6,45 @@
 #include <string.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "../common/mmapFile.h"
-#include "../common/transfer.h"
+#include "mmapFile.h"
+#include "transfer.h"
+#include "threadpool.h"
 
 //0xAF 0xAE -- 传送文件信息
 //0xAF 0xAF -- 传送文件数据
 
-#define BUF_SIZE 1024
-#define FILENAME "file.txt"
+#define     BUF_SIZE        1024
+#define     FILENAME        "file.txt"
+#define     SERVER_ADDR     "127.0.0.1"
+#define     PTHREAD_NUM     5
 
 void *send_fileinfo(void *arg);
 void *send_filedata(void *arg);
 int socket_and_connect();
 
-static int pthreads = 1; //线程数
+static int pthreads = PTHREAD_NUM; //线程数
 
 int main(int argc, char const *argv[])
 {
-    pthread_t pthread_;
+  pthread_t pthread_;
     pthread_create(&pthread_, NULL, send_fileinfo, NULL);
     pthread_join(pthread_, NULL);
-    int pthreadNo = 0;
-    pthread_create(&pthread_, NULL, send_filedata, (void*)&pthreadNo);
-    pthread_join(pthread_, NULL);
 
-    /*     memset(&transfer_, 0, sizeof(transfer_t));
-
-    int pthreads = 1;
+    threadpool_t *pool = threadpool_create(5, 120);
+    int arr[PTHREAD_NUM] = {0};
     int i = 0;
-    int arr[4] = {0};
-    for (i = 0; i < pthreads; i++)
-    {
+    for(i=0; i<PTHREAD_NUM; i++){
         arr[i] = i;
     }
-    pthread_t pthread_id[4];
-    for (i = 0; i < pthreads; i++)
-    {
-        pthread_create(&pthread_id[i], NULL, send_filedata, (void *)&arr[i]);
+
+    for(i=0; i<PTHREAD_NUM; i++){
+        task_t task;
+        task.data = (void*)&arr[i];
+        task.func = send_filedata;
+        tasks_add(pool, task);
     }
-    for (i = 0; i < pthreads; i++)
-    {
-        pthread_join(pthread_id[i], NULL);
-    } */
+
+    threadpool_destory(pool);
     return 0;
 }
 
@@ -68,12 +65,6 @@ void *send_fileinfo(void *arg)
     //所有数据大小==fileSize
     buf[HEAD_POS_TOTAL_SIZE] = fileSize >> 8;
     buf[HEAD_POS_TOTAL_SIZE + 1] = (fileSize & 0xff);
-    /* 	// 所有分片的数量
-	buf[HEAD_POS_TOTAL_PIECES] = 0 >> 8;
-	buf[HEAD_POS_TOTAL_PIECES + 1] = (0 & 0xff);
-	// 分片编号，从0开始
-	buf[HEAD_POS_P_INDEX] = 0 >> 8;
-	buf[HEAD_POS_P_INDEX + 1] = (0 & 0xff); */
     // 文件名字节数
     buf[HEAD_POS_P_LENGTH] = fileNameSize >> 8;
     buf[HEAD_POS_P_LENGTH + 1] = (fileNameSize & 0xff);
@@ -146,7 +137,7 @@ int socket_and_connect()
 
     addr.sin_family = AF_INET;
     addr.sin_port = htons(8080);
-    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    addr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
 
     ret = connect(fd, (struct sockaddr *)&addr, sizeof(struct sockaddr));
     if (ret < 0)
