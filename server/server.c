@@ -10,8 +10,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include "../common/mmapFile.h"
-#include "../common/transfer.h"
+#include "mmapFile.h"
+#include "transfer.h"
 
 #define ADDR "127.0.0.1"
 #define PORT 8080
