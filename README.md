@@ -16,3 +16,4 @@ mmap是一个很好的用于文件传输的映射
 pthread_getaffinity_np进行cpu绑定
 makefile的使用(common、client、 server)
 
+my new change for test
